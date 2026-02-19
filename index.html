@@ -3,9 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Plateforme NeuroCognitive — Évaluation Express</title>
+  <title>NEUROCOG LAB — Évaluation Express</title>
+  <link rel="icon" href="data:,">
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <!-- Décor -->
   <div class="bg-grid"></div>
@@ -19,7 +21,7 @@
         <div class="brand-dot"></div>
         <div class="brand-text">
           <div class="brand-title">NEUROCOG LAB</div>
-          <div class="brand-sub">Portail expérimental — protocole NCX-17 • v0.9 (INTERNE)</div>
+          <div class="brand-sub">Portail expérimental — protocole NCX-17 • v1.0 (INTERNE)</div>
         </div>
       </div>
     </div>
@@ -40,6 +42,54 @@
     </div>
   </header>
 
+  <!-- GRAND COACH À GAUCHE (un seul visible selon la phase) -->
+  <aside class="coach-side" aria-label="Coach">
+    <!-- Phase 1 -->
+    <section class="coach-panel active" id="panelScientist">
+      <div class="coach-top">
+        <div class="badge">COACH 1 • SCIENCE</div>
+        <div class="coach-ids">
+          <div class="coach-name">Dr. Gérard Poincaré</div>
+          <div class="coach-role">NeuroRigueur • Statistique appliquée • Protocole NCX-17</div>
+        </div>
+      </div>
+
+      <div class="coach-portrait">
+        <img class="avatar-big" src="chercheur.png" alt="Dr. Gérard Poincaré" />
+        <div class="glow-ring"></div>
+      </div>
+
+      <div class="speech" id="speechScientist">
+        <div class="speech-title" id="speechTitleS">Dr. Gérard Poincaré</div>
+        <div class="speech-text" id="speechTextS">Portail initialisé. Sélectionnez un profil.</div>
+        <div class="speech-tail"></div>
+      </div>
+    </section>
+
+    <!-- Phase 2 -->
+    <section class="coach-panel" id="panelCoach">
+      <div class="coach-top">
+        <div class="badge hot">COACH 2 • PERFORMANCE</div>
+        <div class="coach-ids">
+          <div class="coach-name">Valentina Blaze</div>
+          <div class="coach-role">Focus • Motivation • Neuro-Boost™ (non homologué)</div>
+        </div>
+      </div>
+
+      <div class="coach-portrait">
+        <img class="avatar-big" src="coach.png" alt="Valentina Blaze" />
+        <div class="glow-ring hot"></div>
+      </div>
+
+      <div class="speech" id="speechCoach">
+        <div class="speech-title" id="speechTitleC">Valentina Blaze</div>
+        <div class="speech-text" id="speechTextC">On va tout exploser 😄</div>
+        <div class="speech-tail"></div>
+      </div>
+    </section>
+  </aside>
+
+  <!-- CONTENU PRINCIPAL -->
   <main class="card">
     <h1>Évaluation neurocognitive express</h1>
     <p class="subtitle">
@@ -57,14 +107,14 @@
           <button class="choice" data-g="N">Je préfère ne pas répondre</button>
         </div>
         <p class="hint">
-          Aucune donnée n’est stockée. Résultat généré localement dans votre navigateur.
-          (Oui oui, c’est “sérieux”.)
+          Aucune donnée n’est stockée. Résultat généré localement. Oui, c’est “ultra-scientifique”.
         </p>
       </div>
+
       <div class="panel minor">
         <div class="panel-title">Avertissement</div>
         <p class="hint">
-          Ce test est une expérience ludique. Toute ressemblance avec une étude réelle serait… extrêmement flatteuse.
+          Expérience ludique. Toute ressemblance avec une étude réelle serait… une coïncidence très flatteuse.
         </p>
       </div>
     </section>
@@ -73,7 +123,7 @@
       <div class="panel">
         <div class="panel-title">Briefing opérateur</div>
         <p class="subtitle" id="coachBrief">
-          Le protocole va démarrer. Restez immobile, respirez, et ne clignez pas des yeux au mauvais moment.
+          Le protocole va démarrer. Restez immobile et évitez l’ego.
         </p>
         <button id="btnStart">Démarrer la séquence</button>
       </div>
@@ -114,6 +164,7 @@
           <div class="big"><span>Indice de sexisme</span><strong id="rSexism">—</strong></div>
         </div>
         <p id="finalJoke" class="subtitle"></p>
+
         <div class="row">
           <button id="btnRestart">Refaire le test</button>
           <button id="btnCopy" class="ghost">Copier le verdict</button>
@@ -122,48 +173,6 @@
     </section>
   </main>
 
-  <!-- Dock coach (toujours affiché) -->
-  <aside class="coach-dock" aria-label="Coachs">
-    <div class="coach-card" id="cardScientist">
-      <div class="badge">COACH 1 • SCIENCE</div>
-      <div class="coach-body">
-        <img class="avatar" src="chercheur.png" alt="Coach scientifique" />
-        <div class="coach-meta">
-          <div class="coach-name">Dr. Gérard Poincaré</div>
-          <div class="coach-role">Directeur adjoint • NeuroRigueur &amp; Statistique appliquée</div>
-          <div class="coach-tags">
-            <span class="pill">AUSTÈRE</span>
-            <span class="pill">CALIBRÉ</span>
-            <span class="pill">SANS HUMOUR</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="coach-card active" id="cardCoach">
-      <div class="badge hot">COACH 2 • PERFORMANCE</div>
-      <div class="coach-body">
-        <img class="avatar" src="coach.png" alt="Coach performance" />
-        <div class="coach-meta">
-          <div class="coach-name">Valentina Blaze</div>
-          <div class="coach-role">Coach • Motivation, Focus &amp; “Neuro-Boost™”</div>
-          <div class="coach-tags">
-            <span class="pill">ASSURANCE</span>
-            <span class="pill">ÉNERGIE</span>
-            <span class="pill">MODE TURBO</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="speech" id="speech">
-      <div class="speech-title" id="speechTitle">Système</div>
-      <div class="speech-text" id="speechText">Initialisation…</div>
-      <div class="speech-tail"></div>
-    </div>
-  </aside>
-
-  <script src="script.js?v=3"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>
-
