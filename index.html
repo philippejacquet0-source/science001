@@ -3,68 +3,165 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Test Cognitif Express</title>
+  <title>Plateforme NeuroCognitive — Évaluation Express</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Décor -->
+  <div class="bg-grid"></div>
+  <div class="bg-vignette"></div>
+  <div class="bg-scanlines"></div>
+
+  <!-- HUD -->
+  <header class="hud">
+    <div class="hud-left">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <div class="brand-text">
+          <div class="brand-title">NEUROCOG LAB</div>
+          <div class="brand-sub">Portail expérimental — protocole NCX-17 • v0.9 (INTERNE)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hud-right">
+      <div class="hud-chip">
+        <span class="chip-label">STATUT</span>
+        <span class="chip-value" id="hudStatus">READY</span>
+      </div>
+      <div class="hud-chip">
+        <span class="chip-label">SESSION</span>
+        <span class="chip-value" id="hudSession">#—</span>
+      </div>
+      <div class="hud-chip">
+        <span class="chip-label">MODE</span>
+        <span class="chip-value">ULTRA-SCIENCE</span>
+      </div>
+    </div>
+  </header>
+
   <main class="card">
-    <h1>Test cognitif express</h1>
-    <p class="subtitle">Durée : ~2 minutes. Résultat immédiat.</p>
+    <h1>Évaluation neurocognitive express</h1>
+    <p class="subtitle">
+      Durée : ~2 minutes • Réflexes + Mémoire + Logique •
+      <span class="tag">ANALYSE EN TEMPS RÉEL</span>
+    </p>
 
     <section id="screen-intro" class="screen active">
-      <p><strong>Vous êtes :</strong></p>
-      <div class="row">
-        <button class="choice" data-g="H">Homme</button>
-        <button class="choice" data-g="F">Femme</button>
-        <button class="choice" data-g="N">Je préfère ne pas répondre</button>
+      <div class="panel">
+        <div class="panel-title">Identification — (statistique)</div>
+        <p><strong>Vous êtes :</strong></p>
+        <div class="row">
+          <button class="choice" data-g="H">Homme</button>
+          <button class="choice" data-g="F">Femme</button>
+          <button class="choice" data-g="N">Je préfère ne pas répondre</button>
+        </div>
+        <p class="hint">
+          Aucune donnée n’est stockée. Résultat généré localement dans votre navigateur.
+          (Oui oui, c’est “sérieux”.)
+        </p>
       </div>
-      <p class="hint">Ce test mesure réflexes, mémoire et logique.</p>
+      <div class="panel minor">
+        <div class="panel-title">Avertissement</div>
+        <p class="hint">
+          Ce test est une expérience ludique. Toute ressemblance avec une étude réelle serait… extrêmement flatteuse.
+        </p>
+      </div>
     </section>
 
     <section id="screen-coach" class="screen">
-      <div class="coachbox">
-        <div class="avatar" id="avatar"></div>
-        <div>
-          <h2 id="coachTitle">Coach</h2>
-          <p id="coachText" class="subtitle"></p>
-        </div>
+      <div class="panel">
+        <div class="panel-title">Briefing opérateur</div>
+        <p class="subtitle" id="coachBrief">
+          Le protocole va démarrer. Restez immobile, respirez, et ne clignez pas des yeux au mauvais moment.
+        </p>
+        <button id="btnStart">Démarrer la séquence</button>
       </div>
-      <button id="btnStart">Démarrer</button>
     </section>
 
     <section id="screen-reflex" class="screen">
-      <h2>Réflexes</h2>
-      <p>Clique dès que le rond devient <strong>vert</strong>.</p>
-      <div id="target" class="target"></div>
-      <p id="reflexStatus" class="subtitle"></p>
-      <button id="btnNext1" class="hidden">Continuer</button>
+      <div class="panel">
+        <div class="panel-title">Module A — Réflexes</div>
+        <p>Clique dès que le rond devient <strong>vert</strong>.</p>
+        <div id="target" class="target"></div>
+        <p id="reflexStatus" class="subtitle"></p>
+        <button id="btnNext1" class="hidden">Continuer</button>
+      </div>
     </section>
 
     <section id="screen-memory" class="screen">
-      <h2>Mémoire</h2>
-      <p>Retenez cette suite :</p>
-      <div id="digits" class="digits">—</div>
-      <div id="memoryInput" class="hidden">
-        <input id="digitsAnswer" type="text" inputmode="numeric" placeholder="Re-tapez la suite" />
-        <button id="btnCheck">Valider</button>
+      <div class="panel">
+        <div class="panel-title">Module B — Mémoire</div>
+        <p>Retenez cette suite :</p>
+        <div id="digits" class="digits">—</div>
+        <div id="memoryInput" class="hidden">
+          <input id="digitsAnswer" type="text" inputmode="numeric" placeholder="Re-tapez la suite" />
+          <button id="btnCheck">Valider</button>
+        </div>
+        <p id="memoryStatus" class="subtitle"></p>
+        <button id="btnNext2" class="hidden">Continuer</button>
       </div>
-      <p id="memoryStatus" class="subtitle"></p>
-      <button id="btnNext2" class="hidden">Continuer</button>
     </section>
 
     <section id="screen-result" class="screen">
-      <h2>Résultats</h2>
-      <div class="results">
-        <div><span>Score réflexes</span><strong id="rReflex">—</strong></div>
-        <div><span>Score mémoire</span><strong id="rMemory">—</strong></div>
-        <div><span>Score logique</span><strong id="rLogic">—</strong></div>
-        <hr/>
-        <div class="big"><span>Indice de sexisme</span><strong id="rSexism">—</strong></div>
+      <div class="panel">
+        <div class="panel-title">Synthèse</div>
+        <div class="results">
+          <div><span>Score réflexes</span><strong id="rReflex">—</strong></div>
+          <div><span>Score mémoire</span><strong id="rMemory">—</strong></div>
+          <div><span>Score logique</span><strong id="rLogic">—</strong></div>
+          <hr/>
+          <div class="big"><span>Indice de sexisme</span><strong id="rSexism">—</strong></div>
+        </div>
+        <p id="finalJoke" class="subtitle"></p>
+        <div class="row">
+          <button id="btnRestart">Refaire le test</button>
+          <button id="btnCopy" class="ghost">Copier le verdict</button>
+        </div>
       </div>
-      <p id="finalJoke" class="subtitle"></p>
-      <button id="btnRestart">Refaire le test</button>
     </section>
   </main>
+
+  <!-- Dock coach (toujours affiché) -->
+  <aside class="coach-dock" aria-label="Coachs">
+    <div class="coach-card" id="cardScientist">
+      <div class="badge">COACH 1 • SCIENCE</div>
+      <div class="coach-body">
+        <img class="avatar" src="chercheur.png" alt="Coach scientifique" />
+        <div class="coach-meta">
+          <div class="coach-name">Dr. Gérard Poincaré</div>
+          <div class="coach-role">Directeur adjoint • NeuroRigueur &amp; Statistique appliquée</div>
+          <div class="coach-tags">
+            <span class="pill">AUSTÈRE</span>
+            <span class="pill">CALIBRÉ</span>
+            <span class="pill">SANS HUMOUR</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="coach-card active" id="cardCoach">
+      <div class="badge hot">COACH 2 • PERFORMANCE</div>
+      <div class="coach-body">
+        <img class="avatar" src="coach.png" alt="Coach performance" />
+        <div class="coach-meta">
+          <div class="coach-name">Valentina Blaze</div>
+          <div class="coach-role">Coach • Motivation, Focus &amp; “Neuro-Boost™”</div>
+          <div class="coach-tags">
+            <span class="pill">ASSURANCE</span>
+            <span class="pill">ÉNERGIE</span>
+            <span class="pill">MODE TURBO</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="speech" id="speech">
+      <div class="speech-title" id="speechTitle">Système</div>
+      <div class="speech-text" id="speechText">Initialisation…</div>
+      <div class="speech-tail"></div>
+    </div>
+  </aside>
 
   <script src="script.js"></script>
 </body>
