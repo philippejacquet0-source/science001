@@ -389,3 +389,27 @@ hr{ border: none; border-top: 1px solid rgba(255,255,255,0.12); margin: 6px 0; }
   .card{ margin-left: 0; }
   .coach-portrait{ height: 46vh; min-height: 280px; }
 }
+
+/* Reaction animations */
+.coach-portrait.reaction-pop{
+  animation: reactionPop 0.22s ease-out;
+}
+@keyframes reactionPop{
+  0%{ transform: scale(1); }
+  70%{ transform: scale(1.015); }
+  100%{ transform: scale(1); }
+}
+
+.coach-portrait.reaction-shake{
+  animation: reactionShake 0.28s ease-in-out;
+}
+@keyframes reactionShake{
+  0%{ transform: translateX(0); }
+  20%{ transform: translateX(-4px); }
+  40%{ transform: translateX(4px); }
+  60%{ transform: translateX(-3px); }
+  80%{ transform: translateX(3px); }
+  100%{ transform: translateX(0); }
+}
+
+
