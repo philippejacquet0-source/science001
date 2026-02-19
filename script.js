@@ -1,71 +1,51 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const $ = (sel) => document.querySelector(sel);
-
   const screens = {
-    intro: $('#screen-intro'),
-    coach: $('#screen-coach'),
-    reflex: $('#screen-reflex'),
-    memory: $('#screen-memory'),
-    result: $('#screen-result'),
+    intro: document.querySelector('#screen-intro'),
+    coach: document.querySelector('#screen-coach'),
+    reflex: document.querySelector('#screen-reflex'),
+    memory: document.querySelector('#screen-memory'),
+    result: document.querySelector('#screen-result'),
   };
 
-  // Si un écran manque, on stoppe avec un message clair
-  if (!screens.intro || !screens.coach || !screens.reflex || !screens.memory || !screens.result) {
-    console.error("Screens manquants : vérifie les IDs #screen-* dans index.html");
-    return;
-  }
+  const hudStatus  = document.querySelector('#hudStatus');
+  const hudSession = document.querySelector('#hudSession');
 
-  const hudStatus = $('#hudStatus');
-  const hudSession = $('#hudSession');
+  const coachBrief = document.querySelector('#coachBrief');
+  const btnStart   = document.querySelector('#btnStart');
 
-  const coachBrief = $('#coachBrief');
-  const btnStart = $('#btnStart');
+  const target       = document.querySelector('#target');
+  const reflexStatus = document.querySelector('#reflexStatus');
+  const btnNext1     = document.querySelector('#btnNext1');
 
-  const target = $('#target');
-  const reflexStatus = $('#reflexStatus');
-  const btnNext1 = $('#btnNext1');
+  const digitsEl     = document.querySelector('#digits');
+  const memoryInput  = document.querySelector('#memoryInput');
+  const digitsAnswer = document.querySelector('#digitsAnswer');
+  const btnCheck     = document.querySelector('#btnCheck');
+  const memoryStatus = document.querySelector('#memoryStatus');
+  const btnNext2     = document.querySelector('#btnNext2');
 
-  const digitsEl = $('#digits');
-  const memoryInput = $('#memoryInput');
-  const digitsAnswer = $('#digitsAnswer');
-  const btnCheck = $('#btnCheck');
-  const memoryStatus = $('#memoryStatus');
-  const btnNext2 = $('#btnNext2');
+  const rReflex   = document.querySelector('#rReflex');
+  const rMemory   = document.querySelector('#rMemory');
+  const rLogic    = document.querySelector('#rLogic');
+  const rSexism   = document.querySelector('#rSexism');
+  const finalJoke = document.querySelector('#finalJoke');
 
-  const rReflex = $('#rReflex');
-  const rMemory = $('#rMemory');
-  const rLogic = $('#rLogic');
-  const rSexism = $('#rSexism');
-  const finalJoke = $('#finalJoke');
-  const btnRestart = $('#btnRestart');
-  const btnCopy = $('#btnCopy');
+  const btnRestart = document.querySelector('#btnRestart');
+  const btnCopy    = document.querySelector('#btnCopy');
 
-  const cardScientist = $('#cardScientist');
-  const cardCoach = $('#cardCoach');
+  const panelScientist = document.querySelector('#panelScientist');
+  const panelCoach     = document.querySelector('#panelCoach');
 
-  const speechTitle = $('#speechTitle');
-  const speechText = $('#speechText');
+  const speechScientist = document.querySelector('#speechScientist');
+  const speechCoach     = document.querySelector('#speechCoach');
 
-  // Garde-fous : si un élément critique manque, on log au lieu de crasher.
-  const required = [
-    ['hudStatus', hudStatus], ['hudSession', hudSession],
-    ['coachBrief', coachBrief], ['btnStart', btnStart],
-    ['target', target], ['reflexStatus', reflexStatus], ['btnNext1', btnNext1],
-    ['digits', digitsEl], ['memoryInput', memoryInput], ['digitsAnswer', digitsAnswer],
-    ['btnCheck', btnCheck], ['memoryStatus', memoryStatus], ['btnNext2', btnNext2],
-    ['rReflex', rReflex], ['rMemory', rMemory], ['rLogic', rLogic], ['rSexism', rSexism],
-    ['finalJoke', finalJoke], ['btnRestart', btnRestart], ['btnCopy', btnCopy],
-    ['cardScientist', cardScientist], ['cardCoach', cardCoach],
-    ['speechTitle', speechTitle], ['speechText', speechText],
-  ];
-  const missing = required.filter(([, el]) => !el).map(([name]) => name);
-  if (missing.length) {
-    console.error("IDs manquants dans index.html :", missing);
-    // On continue quand même, mais certaines fonctions seront limitées.
-  }
+  const speechTitleS = document.querySelector('#speechTitleS');
+  const speechTextS  = document.querySelector('#speechTextS');
+  const speechTitleC = document.querySelector('#speechTitleC');
+  const speechTextC  = document.querySelector('#speechTextC');
 
   let gender = "N";
-  let phase = 0;        // 0 = chercheur, 1 = coach
+  let phase  = 0; // 0 = Dr Poincaré, 1 = Valentina
   let sessionId = 0;
 
   let reflexTimes = [];
@@ -84,28 +64,34 @@ document.addEventListener('DOMContentLoaded', () => {
     if (hudStatus) hudStatus.textContent = status;
   }
 
-  function speak(who, text){
-    if (speechTitle) speechTitle.textContent = who;
-    if (speechText) speechText.textContent = text;
+  function popSpeech(el){
+    el?.animate?.(
+      [{ transform:'translateY(0)', opacity:0.85 }, { transform:'translateY(-2px)', opacity:1 }, { transform:'translateY(0)', opacity:0.95 }],
+      { duration: 240, easing: 'ease-out' }
+    );
+  }
 
-    const el = document.querySelector('.speech');
-    if (el && el.animate) {
-      el.animate(
-        [{ transform: 'translateY(0)', opacity: 0.85 }, { transform: 'translateY(-2px)', opacity: 1 }, { transform: 'translateY(0)', opacity: 0.95 }],
-        { duration: 240, easing: 'ease-out' }
-      );
+  function speak(who, text){
+    if(phase === 0){
+      if (speechTitleS) speechTitleS.textContent = who;
+      if (speechTextS)  speechTextS.textContent  = text;
+      popSpeech(speechScientist);
+    } else {
+      if (speechTitleC) speechTitleC.textContent = who;
+      if (speechTextC)  speechTextC.textContent  = text;
+      popSpeech(speechCoach);
     }
   }
 
   function setActiveCoach(){
-    if (phase === 0){
-      cardScientist?.classList.add('active');
-      cardCoach?.classList.remove('active');
-      speak("Dr. Gérard Poincaré", "Initialisation… Gardez votre dignité et votre temps de réaction sous contrôle.");
+    if(phase === 0){
+      panelScientist?.classList.add('active');
+      panelCoach?.classList.remove('active');
+      speak("Dr. Gérard Poincaré", "Initialisation… Je supervise cette expérience avec une joie parfaitement mesurée.");
     } else {
-      cardCoach?.classList.add('active');
-      cardScientist?.classList.remove('active');
-      speak("Valentina Blaze", "Ok champion 😄 On refait pareil, mais en mode turbo-focus. Tu vas tout détruire.");
+      panelCoach?.classList.add('active');
+      panelScientist?.classList.remove('active');
+      speak("Valentina Blaze", "Phase 2 😄 Maintenant on passe en mode turbo-focus. Tu vas tout casser.");
     }
   }
 
@@ -114,19 +100,19 @@ document.addEventListener('DOMContentLoaded', () => {
       coachBrief.textContent =
         phase === 0
           ? "Protocole NCX-17. Phase 1 : calibration des réflexes et de la mémoire. Aucune approximation n’est tolérée."
-          : "Phase 2 : revalidation sous stimulus motivational renforcé. (Oui, c’est très scientifique.)";
+          : "Phase 2 : revalidation sous stimulus motivationnel renforcé. (Oui, c’est très scientifique.)";
     }
-
     setHUD(phase === 0 ? "CALIBRATION" : "REVALIDATION");
     setActiveCoach();
     show('coach');
   }
 
-  // Bind choix H/F/N
+  // Choix sexe
   document.querySelectorAll('.choice').forEach(btn => {
     btn.addEventListener('click', () => {
       gender = btn.dataset.g || "N";
-      sessionId = Math.floor(100000 + Math.random()*900000);
+
+      sessionId = Math.floor(100000 + Math.random() * 900000);
       if (hudSession) hudSession.textContent = `#${sessionId}`;
 
       phase = 0;
@@ -134,7 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
       memoryScore = 0;
 
       setHUD("READY");
-      speak("Système", "Sélection enregistrée. Injection de sérieux… en cours.");
+      // On reste sur le coach 1 pour l'intro
+      panelScientist?.classList.add('active');
+      panelCoach?.classList.remove('active');
+      if (speechTitleS) speechTitleS.textContent = "Dr. Gérard Poincaré";
+      if (speechTextS)  speechTextS.textContent  = "Profil enregistré. Merci de ne pas paniquer. Passons au protocole.";
+      popSpeech(speechScientist);
+
       setupCoachScreen();
     });
   });
@@ -143,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     speak(
       phase === 0 ? "Dr. Gérard Poincaré" : "Valentina Blaze",
       phase === 0
-        ? "Module A. Cliquez uniquement au signal vert. Toute précipitation sera notée."
+        ? "Module A. Cliquez uniquement au signal vert. Toute précipitation sera… notée."
         : "Go ! Dès que c’est vert tu cliques. Respire. Focus 😄"
     );
     startReflex();
@@ -156,15 +148,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!target) return;
 
     target.className = "target";
-    target.replaceWith(target.cloneNode(true)); // retire les anciens listeners
-    const newTarget = $('#target');
+    target.replaceWith(target.cloneNode(true)); // purge listeners
+    const newTarget = document.querySelector('#target');
 
     setHUD("REFLEX");
     show('reflex');
 
-    const delay = 850 + Math.random()*1700;
+    const delay = 850 + Math.random() * 1700;
+    if (waitingTimeout) clearTimeout(waitingTimeout);
 
-    if(waitingTimeout) clearTimeout(waitingTimeout);
     waitingTimeout = setTimeout(() => {
       newTarget.classList.add('ready', 'go');
       newTarget.addEventListener('click', onClickTarget, { once: true });
@@ -181,9 +173,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (reflexStatus) reflexStatus.textContent = `Temps : ${pretty} ms`;
 
       if(phase === 0){
-        speak("Dr. Gérard Poincaré", `Mesure acquise : ${pretty} ms. Acceptable. Passons au module mémoire.`);
+        speak("Dr. Gérard Poincaré", `Mesure acquise : ${pretty} ms. C’est… acceptable. Passons à la mémoire.`);
       } else {
-        speak("Valentina Blaze", `${pretty} ms ! Nice 😄 Module mémoire, go.`);
+        speak("Valentina Blaze", `${pretty} ms ! Nice 😄 Tu vois ? Module mémoire, go.`);
       }
 
       btnNext1?.classList.remove('hidden');
@@ -194,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function randDigits(n=5){
     let s = "";
-    for(let i=0;i<n;i++) s += Math.floor(Math.random()*10);
+    for(let i=0;i<n;i++) s += Math.floor(Math.random() * 10);
     return s;
   }
 
@@ -212,8 +204,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     speak(
       phase === 0 ? "Dr. Gérard Poincaré" : "Valentina Blaze",
-      phase === 0 ? "Retenez la suite. Le cerveau est une machine : on la nourrit avec des chiffres."
-                : "Tu regardes… tu imprimes… et tu retapes 😄"
+      phase === 0
+        ? "Retenez la suite. Le cerveau est une machine : on la nourrit avec des chiffres."
+        : "Tu regardes… tu imprimes… et tu retapes 😄"
     );
 
     setTimeout(() => {
@@ -241,6 +234,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnNext2?.addEventListener('click', () => {
     if(phase === 0){
+      // Basculer en phase 2 (coach visible uniquement)
       phase = 1;
       setupCoachScreen();
     } else {
@@ -253,12 +247,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function finish(){
     setHUD("ANALYSIS");
 
-    const avg = reflexTimes.reduce((a,b)=>a+b,0)/reflexTimes.length;
-    const reflexScore = Math.round(clamp(100 - (avg-180)/6, 10, 100));
-    const memScore = Math.round((memoryScore/2)*100);
-    const logicScore = Math.round(82 + Math.random()*15);
+    const avg = reflexTimes.reduce((a,b)=>a+b,0) / reflexTimes.length;
+    const reflexScore = Math.round(clamp(100 - (avg - 180) / 6, 10, 100));
+    const memScore = Math.round((memoryScore / 2) * 100);
+    const logicScore = Math.round(82 + Math.random() * 15);
 
-    const sexism = Math.round(120 + (Math.random()*900));
+    const sexism = Math.round(120 + (Math.random() * 900));
     const label = sexism > 700 ? "niveau « tonton au barbecue »" :
                   sexism > 400 ? "niveau « humour de vestiaire »" :
                                  "niveau « léger mais perfectible »";
@@ -271,28 +265,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const gtxt = gender === "H" ? "Monsieur" : gender === "F" ? "Madame" : "Vous";
     if (finalJoke) finalJoke.textContent = `${gtxt}, verdict : ${label}. (Spoiler : c’est une blague 😄)`;
 
-    speak("Système", "Calcul terminé. Crédibilité : 100%. Interprétation scientifique : …aucune 😄");
+    // Dernière réplique du coach actif (phase 2)
+    speak("Valentina Blaze", "Calcul terminé 😄 Conclusion : tu es officiellement… très “humain”.");
     show('result');
   }
 
   btnRestart?.addEventListener('click', () => {
     setHUD("READY");
     if (hudSession) hudSession.textContent = "#—";
-    speak("Système", "Réinitialisation complète. Retour au panneau de contrôle.");
+
+    gender = "N";
+    phase = 0;
+    reflexTimes = [];
+    memoryScore = 0;
+
+    panelScientist?.classList.add('active');
+    panelCoach?.classList.remove('active');
+
+    if (speechTitleS) speechTitleS.textContent = "Dr. Gérard Poincaré";
+    if (speechTextS)  speechTextS.textContent  = "Réinitialisation. Merci de revenir avec un cerveau frais.";
+    popSpeech(speechScientist);
+
     show('intro');
   });
 
   btnCopy?.addEventListener('click', async () => {
-    const text = `NEUROCOG LAB — Verdict: Réflexes ${rReflex?.textContent || "?"}, Mémoire ${rMemory?.textContent || "?"}, Logique ${rLogic?.textContent || "?"}, Indice de sexisme ${rSexism?.textContent || "?"}.`;
+    const text = `NEUROCOG LAB — Verdict: Réflexes ${rReflex?.textContent || "?"}, Mémoire ${rMemory?.textContent || "?"}, Logique ${rLogic?.textContent || "?"}, Indice ${rSexism?.textContent || "?"}.`;
     try{
       await navigator.clipboard.writeText(text);
-      speak("Système", "Verdict copié. Diffusion virale recommandée.");
+      speak(phase === 0 ? "Dr. Gérard Poincaré" : "Valentina Blaze",
+            "Verdict copié. Diffusion contrôlée… ou pas.");
     } catch(e){
-      speak("Système", "Copie impossible (permissions). Copie manuelle style 1998.");
+      speak(phase === 0 ? "Dr. Gérard Poincaré" : "Valentina Blaze",
+            "Copie impossible (permissions). Recopie manuelle, style 1998.");
     }
   });
 
-  // Boot message
-  speak("Système", "Portail initialisé. Sélectionnez un profil pour démarrer.");
+  // Boot
   setHUD("READY");
 });
