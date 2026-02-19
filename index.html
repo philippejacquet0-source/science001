@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Test Cognitif Express</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>Test cognitif express</h1>
+    <p class="subtitle">Durée : ~2 minutes. Résultat immédiat.</p>
+
+    <section id="screen-intro" class="screen active">
+      <p><strong>Vous êtes :</strong></p>
+      <div class="row">
+        <button class="choice" data-g="H">Homme</button>
+        <button class="choice" data-g="F">Femme</button>
+        <button class="choice" data-g="N">Je préfère ne pas répondre</button>
+      </div>
+      <p class="hint">Ce test mesure réflexes, mémoire et logique.</p>
+    </section>
+
+    <section id="screen-coach" class="screen">
+      <div class="coachbox">
+        <div class="avatar" id="avatar"></div>
+        <div>
+          <h2 id="coachTitle">Coach</h2>
+          <p id="coachText" class="subtitle"></p>
+        </div>
+      </div>
+      <button id="btnStart">Démarrer</button>
+    </section>
+
+    <section id="screen-reflex" class="screen">
+      <h2>Réflexes</h2>
+      <p>Clique dès que le rond devient <strong>vert</strong>.</p>
+      <div id="target" class="target"></div>
+      <p id="reflexStatus" class="subtitle"></p>
+      <button id="btnNext1" class="hidden">Continuer</button>
+    </section>
+
+    <section id="screen-memory" class="screen">
+      <h2>Mémoire</h2>
+      <p>Retenez cette suite :</p>
+      <div id="digits" class="digits">—</div>
+      <div id="memoryInput" class="hidden">
+        <input id="digitsAnswer" type="text" inputmode="numeric" placeholder="Re-tapez la suite" />
+        <button id="btnCheck">Valider</button>
+      </div>
+      <p id="memoryStatus" class="subtitle"></p>
+      <button id="btnNext2" class="hidden">Continuer</button>
+    </section>
+
+    <section id="screen-result" class="screen">
+      <h2>Résultats</h2>
+      <div class="results">
+        <div><span>Score réflexes</span><strong id="rReflex">—</strong></div>
+        <div><span>Score mémoire</span><strong id="rMemory">—</strong></div>
+        <div><span>Score logique</span><strong id="rLogic">—</strong></div>
+        <hr/>
+        <div class="big"><span>Indice de sexisme</span><strong id="rSexism">—</strong></div>
+      </div>
+      <p id="finalJoke" class="subtitle"></p>
+      <button id="btnRestart">Refaire le test</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
